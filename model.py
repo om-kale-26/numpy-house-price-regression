@@ -48,8 +48,19 @@ def compute_iqr_bounds(X, k=1.5):
 
     return lower,higher
 
-# Step 3 - clip_columns (not yet solved)
-# TODO: implement
+# Step 3 - clip_columns
+import numpy as np
+
+
+def clip_columns(X, lower, upper):
+    # TODO: Clip every entry of a feature matrix to per-column lower/upper bounds.
+    
+
+    X_clipped = np.array(X, dtype = float).copy()
+
+    X_clipped = np.clip(X_clipped, lower, upper)
+
+    return X_clipped
 
 # Step 4 - make_ratio_feature (not yet solved)
 # TODO: implement
