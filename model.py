@@ -173,8 +173,17 @@ def partition_indices(indices, train_ratio, val_ratio):
     
     pass
 
-# Step 12 - subset_xy (not yet solved)
-# TODO: implement
+# Step 12 - subset_xy
+import numpy as np
+
+def subset_xy(X, y, indices):
+    # 1. Select the rows matching the indices from the 2-D matrix X
+    X_sub = X[indices]
+    
+    # 2. Select the corresponding values matching the indices from the 1-D vector y
+    y_sub = y[indices]
+    
+    return X_sub, y_sub
 
 # Step 13 - ols_fit (not yet solved)
 # TODO: implement
