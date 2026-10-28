@@ -199,8 +199,15 @@ def ols_fit(X, y):
 
     return C
 
-# Step 14 - ols_predict (not yet solved)
-# TODO: implement
+# Step 14 - ols_predict
+import numpy as np
+
+def ols_predict(X, theta):
+    # TODO: Predict continuous targets with a fitted linear model.
+
+    predictions = X @ theta
+
+    return predictions
 
 # Step 15 - mean_absolute_error (not yet solved)
 # TODO: implement
