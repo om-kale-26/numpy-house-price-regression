@@ -376,8 +376,27 @@ def standardize_and_add_bias(splits):
     # 5. Return the requested triple format
     return std_splits, mean, std
 
-# Step 23 - evaluate_predictions (not yet solved)
-# TODO: implement
+# Step 23 - evaluate_predictions
+import numpy as np
+
+def evaluate_predictions(y_true, y_pred):
+    # 1. Call your helpers to calculate each individual metric
+    mae_val = mean_absolute_error(y_true, y_pred)
+    rmse_val = root_mean_squared_error(y_true, y_pred)
+    r2_val = r_squared(y_true, y_pred)
+    
+    # 2. Call the residual summary helper to get the nested dictionary
+    res_summary = residual_summary(y_true, y_pred)
+    
+    # 3. Combine everything into a single dictionary matching the exact keys
+    metrics = {
+        "mae": mae_val,
+        "rmse": rmse_val,
+        "r2": r2_val,
+        "residual_summary": res_summary
+    }
+    
+    return metrics
 
 # Step 24 - house_price_pipeline (not yet solved)
 # TODO: implement
