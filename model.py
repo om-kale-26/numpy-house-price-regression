@@ -232,8 +232,25 @@ def root_mean_squared_error(y_true, y_pred):
 
     return np.sqrt(np.mean(errors))
 
-# Step 17 - r_squared (not yet solved)
-# TODO: implement
+# Step 17 - r_squared
+import numpy as np
+
+def r_squared(y_true, y_pred):
+    # 1. Calculate the Residual Sum of Squares (SS_res)
+    ss_res = np.sum((y_true - y_pred) ** 2)
+    
+    # 2. Calculate the Total Sum of Squares around the mean (SS_tot)
+    mean_true = np.mean(y_true)
+    ss_tot = np.sum((y_true - mean_true) ** 2)
+    
+    # 3. Handle the edge case where SS_tot is exactly zero to prevent division by zero
+    if ss_tot == 0.0:
+        return 0.0
+        
+    # 4. Compute the final R^2 value and convert to a standard Python float
+    r2 = 1.0 - (ss_res / ss_tot)
+    
+    return float(r2)
 
 # Step 18 - residual_summary (not yet solved)
 # TODO: implement
