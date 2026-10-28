@@ -398,6 +398,39 @@ def evaluate_predictions(y_true, y_pred):
     
     return metrics
 
-# Step 24 - house_price_pipeline (not yet solved)
-# TODO: implement
+# Step 24 - house_price_pipeline
+import numpy as np
+
+def house_price_pipeline(X, y, ratio_num_idx, ratio_den_idx, cat_labels=None, train_ratio=0.7, val_ratio=0.15, seed=42, iqr_k=1.5):
+    # 1. Clean raw features (impute NaNs and clip outliers using the custom iqr_k)
+    X_cleaned = prepare_cleaned_features(X, iqr_k=iqr_k)
+    
+    # 2. Assemble features (build ratio column and append one-hot categories)
+    X_assembled = assemble_feature_matrix(X_cleaned, ratio_num_idx, ratio_den_idx, cat_labels)
+    
+    # 3. Create reproducible data splits (Train, Validation, Test)
+    splits = make_train_val_test(X_assembled, y, train_ratio, val_ratio, seed)
+    
+    # 4. Standardize the features (train-only metrics) and add the bias column
+    std_splits, mean, std = standardize_and_add_bias(splits)
+    
+    # 5. Fit the Ordinary Least Squares (OLS) model weights on the training set
+    theta = ols_fit(std_splits["X_train"], std_splits["y_train"])
+    
+    # 6. Generate house price predictions for validation and test matrices
+    y_val_pred = ols_predict(std_splits["X_val"], theta)
+    y_test_pred = ols_predict(std_splits["X_test"], theta)
+    
+    # 7. Calculate evaluation metrics for both validation and testing phases
+    val_metrics = evaluate_predictions(std_splits["y_val"], y_val_pred)
+    test_metrics = evaluate_predictions(std_splits["y_test"], y_test_pred)
+    
+    # 8. Return final pipeline dictionary matching the requested keys
+    return {
+        "theta": theta,
+        "y_test": std_splits["y_test"],
+        "y_test_pred": y_test_pred,
+        "test_metrics": test_metrics,
+        "val_metrics": val_metrics
+    }
 
