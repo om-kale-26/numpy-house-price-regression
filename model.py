@@ -296,8 +296,26 @@ def prepare_cleaned_features(X, iqr_k=1.5):
 
     return D
 
-# Step 20 - assemble_feature_matrix (not yet solved)
-# TODO: implement
+# Step 20 - assemble_feature_matrix
+import numpy as np
+
+def assemble_feature_matrix(X_num, ratio_num_idx, ratio_den_idx, cat_labels=None):
+    # 1. Extract the specific numerator and denominator columns from the numeric matrix
+    numerator = X_num[:, ratio_num_idx]
+    denominator = X_num[:, ratio_den_idx]
+    
+    # 2. Call your helper function to create the safe ratio feature
+    ratio_col = make_ratio_feature(numerator, denominator)
+    
+    # 3. Append the ratio feature as the last column of the matrix
+    X_extended = append_column(X_num, ratio_col)
+    
+    # 4. If categorical text labels exist, one-hot encode them and glue them side-by-side
+    if cat_labels is not None:
+        X_cat = one_hot_encode(cat_labels)
+        X_extended = np.hstack((X_extended, X_cat))
+        
+    return X_extended
 
 # Step 21 - make_train_val_test (not yet solved)
 # TODO: implement
