@@ -317,8 +317,34 @@ def assemble_feature_matrix(X_num, ratio_num_idx, ratio_den_idx, cat_labels=None
         
     return X_extended
 
-# Step 21 - make_train_val_test (not yet solved)
-# TODO: implement
+# Step 21 - make_train_val_test
+import numpy as np
+
+def make_train_val_test(X, y, train_ratio, val_ratio, seed):
+    # 1. Get the total number of samples
+    n_samples = X.shape[0]
+    
+    # 2. Use the legacy seed and permutation to match the test environment exactly
+    np.random.seed(seed)
+    shuffled_idx = np.random.permutation(n_samples)
+    
+    # 3. Partition the indices using your helper function
+    train_idx, val_idx, test_idx = partition_indices(shuffled_idx, train_ratio, val_ratio)
+    
+    # 4. Extract the correct data splits
+    X_train, y_train = subset_xy(X, y, train_idx)
+    X_val, y_val = subset_xy(X, y, val_idx)
+    X_test, y_test = subset_xy(X, y, test_idx)
+    
+    # 5. Return the splits dictionary with correct keys
+    return {
+        "X_train": X_train,
+        "y_train": y_train,
+        "X_val": X_val,
+        "y_val": y_val,
+        "X_test": X_test,
+        "y_test": y_test
+    }
 
 # Step 22 - standardize_and_add_bias (not yet solved)
 # TODO: implement
