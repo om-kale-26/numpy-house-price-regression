@@ -346,8 +346,35 @@ def make_train_val_test(X, y, train_ratio, val_ratio, seed):
         "y_test": y_test
     }
 
-# Step 22 - standardize_and_add_bias (not yet solved)
-# TODO: implement
+# Step 22 - standardize_and_add_bias
+import numpy as np
+
+def standardize_and_add_bias(splits):
+    # 1. Fit the standardizer ONLY on the training features to get mean and std
+    mean, std = fit_standardizer(splits["X_train"])
+    
+    # 2. Standardize all three feature splits using the calculated training stats
+    X_train_scaled = apply_standardizer(splits["X_train"], mean, std)
+    X_val_scaled = apply_standardizer(splits["X_val"], mean, std)
+    X_test_scaled = apply_standardizer(splits["X_test"], mean, std)
+    
+    # 3. Prepend the bias column (column of 1.0s) to each standardized matrix
+    X_train_final = add_bias_column(X_train_scaled)
+    X_val_final = add_bias_column(X_val_scaled)
+    X_test_final = add_bias_column(X_test_scaled)
+    
+    # 4. Construct the new splits dictionary keeping y targets untouched
+    std_splits = {
+        "X_train": X_train_final,
+        "y_train": splits["y_train"],
+        "X_val": X_val_final,
+        "y_val": splits["y_val"],
+        "X_test": X_test_final,
+        "y_test": splits["y_test"]
+    }
+    
+    # 5. Return the requested triple format
+    return std_splits, mean, std
 
 # Step 23 - evaluate_predictions (not yet solved)
 # TODO: implement
